@@ -1,13 +1,6 @@
 from scapy.all import *
 import argparse
 
-#arguementos
-ap = argparse.ArgumentParser()
-ap.add_argument('-f', '--file', required=True, help='.pcap file to filter')
-
-#tratar de argumentos
-args = vars(ap.parse_args())
-ficheiro = args["file"]
 
 tcp = []
 udp = []
