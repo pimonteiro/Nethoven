@@ -6,9 +6,9 @@ import argparse
 random.seed(datetime.now())
 
 # Protocols Position on Music
-p_dhcp = 1
 p_tcp = 2
 p_udp = 3
+p_arp = 4
 
 # Compare scales
 c = [12, 24, 36, 48, 60, 72, 84, 96, 108, 120]
@@ -44,7 +44,6 @@ midinotes = []
 notes_tcp = []
 notes_udp = []
 notes_arp = []
-notes_dhcp = []
 
 # arguementos
 ap = argparse.ArgumentParser()
@@ -57,7 +56,6 @@ ficheiro = args["file"]
 tcp = []
 udp = []
 arp = []
-dhcp = []
 
 # carrega cap
 pacotes = rdpcap(ficheiro)
@@ -91,7 +89,7 @@ def clean_list(lista):
 def clean_listas():
     clean_list(udp)
     clean_list(tcp)
-    clean_list(dhcp)
+    clean_list(arp)
 
 
 def pertence_a_escala(x):
