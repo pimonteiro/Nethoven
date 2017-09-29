@@ -1,7 +1,10 @@
 from miditime.miditime import MIDITime
 import random
+from datetime import datetime
 from scapy.all import *
 import argparse
+
+random.seed(datetime.now())
 
 #Protocols Position on Music
 p_dhcp = 1
@@ -95,6 +98,12 @@ def clean_listas():
 	clean_list(arp)
 	clean_list(dhcp)
 
+
+def pertence_a_escala(x):
+	for nota in escalas[0]:
+		if(x in nota):
+			return 1
+	return 0
 # Conversor
 def strcode(code, arrai, position):
 	escala = 0
@@ -119,27 +128,19 @@ def strcode(code, arrai, position):
 			if(x in nota):
 				flag += 1
 		# se tiver na escala
+		break_l=0;
 		if(flag != 0):
 			while True:
-				if(position == 1 and (x < 12 or x > 35)):
+				if((position == 1 and (x < 12 or x > 35)) or not pertence_a_escala(x)):
 					x = random.randint(12, 35) #notas de um baixo, segundo o senpai
+				if((position == 2 and (x < 60 or x > 84)) or (position == 4 and (x < 100 or x > 127))):
+					tamanho -= 7
+					break
+				
+				if(pertence_a_escala(x)):
 					arrai.append(x)
 					tamanho -= 7
-				if(position == 2 and (x < 60 or x > 84)):
-					x = random.randint(60, 84)
-					arrai.append(x)
-					tamanho -= 7
-				if(position == 4 and (x < 100 or x > 127)):
-					x = random.randint(100, 127)
-					arrai.append(x)
-					tamanho -= 7
-				break
-				#for nota in escalas[0]:
-				#	if(x in nota):
-					#	break
-		arrai.append(x)
-		tamanho -= 7
-
+					break
 
 
 
@@ -159,8 +160,8 @@ def make_notes():
 	strcode(f_tcp, notes_tcp, p_tcp)
 	set_note_array(notes_tcp, 1)
 
-	#strcode(f_udp, notes_udp, p_udp)
-	#set_note_array(notes_udp, 1)
+	strcode(f_udp, notes_udp, p_udp)
+	set_note_array(notes_udp, 1)
 	
 	strcode(f_arp, notes_arp, p_arp)
 	set_note_array(notes_arp, 2)
