@@ -6,7 +6,6 @@ import argparse
 random.seed(datetime.now())
 
 # Protocols Position on Music
-p_dhcp = 1
 p_tcp = 2
 p_udp = 3
 p_arp = 4
@@ -45,7 +44,6 @@ midinotes = []
 notes_tcp = []
 notes_udp = []
 notes_arp = []
-notes_dhcp = []
 
 # arguementos
 ap = argparse.ArgumentParser()
@@ -58,7 +56,6 @@ ficheiro = args["file"]
 tcp = []
 udp = []
 arp = []
-dhcp = []
 
 # carrega cap
 pacotes = rdpcap(ficheiro)
@@ -95,11 +92,10 @@ def clean_listas():
     clean_list(udp)
     clean_list(tcp)
     clean_list(arp)
-    clean_list(dhcp)
 
 
 def pertence_a_escala(x):
-    for nota in escalas[0]:
+    for nota in escalas[0]: # 0 = escala VARIAVEL
         if x in nota:
             return 1
     return 0
@@ -110,12 +106,12 @@ def strcode(code, arrai, position):
     escala = 0
     flag = 0
     if code == "":
-        if position == 1:
+        if position == p_arp:
             arrai.append(random.randint(12, 35))
         # print("ERRO" + "codigo: " + code)
-        if position == 3:
+        if position == p_udp:
             arrai.append(random.randint(12, 127))
-        if position == 2:
+        if position == p_tcp:
             arrai.append(random.randint(60, 84))
         else:
             print("ERRO " + code)
@@ -127,16 +123,16 @@ def strcode(code, arrai, position):
         note = code[:y]
         code = code[(y+1):]
         x = note_conv(note, y)
-        for nota in escalas[0]:
+        for nota in escalas[escala]:
             if x in nota:
                 flag += 1
         # se tiver na escala
         if flag != 0:
             while True:
                 print("Nao saio daqui")
-                if (position == 1 and (x < 12 or x > 35)) or not pertence_a_escala(x):
+                if (position == p_arp and (x < 12 or x > 35)) or not pertence_a_escala(x):
                     x = random.randint(12, 35)  # notas de um baixo, segundo o senpai
-                if (position == 2 and (x < 60 or x > 84)) or (position == 4 and (x < 100 or x > 127)):
+                if (position == p_tcp or x < 60 or x > 84) or position == p_udp:
                     tamanho -= y
                     break
 
@@ -158,17 +154,15 @@ def note_conv(note, y):
 def make_notes():
     strcode(f_tcp, notes_tcp, p_tcp)
     set_note_array(notes_tcp, 1)
-    print("TCP DONE")
-    print(notes_tcp)
+
+
     strcode(f_udp, notes_udp, p_udp)
     set_note_array(notes_udp, 1)
-    print("UDP DONE")
+
+
     strcode(f_arp, notes_arp, p_arp)
     set_note_array(notes_arp, 2)
-    print("ARP DONE")
-    strcode(f_dhcp, notes_dhcp, p_dhcp)
-    set_note_array(notes_dhcp, 3)  # Bass
-    print("DHCP DONE")
+
 
 def set_note_array(arrai, PROTOCOL):
     j = 0
@@ -194,8 +188,6 @@ for i in range(len(udp)):
     f_udp += udp[i]
 for i in range(len(tcp)):
     f_tcp += tcp[i]
-for i in range(len(dhcp)):
-    f_dhcp += dhcp[i]
 for i in range(len(arp)):
     f_arp += arp[i]
 
