@@ -129,16 +129,16 @@ def note_conv(note):
 
 
 def make_notes():
-    strcode(f_tcp, notes_tcp, 1)
-    j = set_note_array(notes_tcp, 1, 0)
+    #strcode(f_tcp, notes_tcp, 1)
+    #j = set_note_array(notes_tcp, 1, 0)
 
-    strcode(f_udp, notes_udp, j)
-    j = set_note_array(notes_udp, 1, 0)
+    #strcode(f_udp, notes_udp, j)
+    #j = set_note_array(notes_udp, 1, 0)
     
-    strcode(f_arp, notes_arp, j)
-    j = set_note_array(notes_arp, 2, 0)
+    #strcode(f_arp, notes_arp, j)
+    #j = set_note_array(notes_arp, 2, 0)
     
-    strcode(f_dhcp, notes_dhcp, j)
+    strcode(f_dhcp, notes_dhcp, 1)
     j = set_note_array(notes_dhcp, 3, 0) #Bass
     # for i in range(0, 50):
     #     rnd = random.randint(0, 127)
@@ -174,6 +174,6 @@ for i in range(len(arp)):
 
 #print(len(f_udp)+len(f_tcp)+len(f_arp)+len(f_dhcp))
 make_notes()
-print("DHCP)")
-print(*notes_dhcp, sep='\n')
+#print("NOTAS DHCP: \n")
+#print(*notes_dhcp, sep='\n')
 song.save_midi()
