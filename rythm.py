@@ -3,6 +3,12 @@ import random
 from scapy.all import *
 import argparse
 
+#Protocols Position on Music
+p_dhcp = 1
+p_tcp = 2
+p_udp = 3 
+p_arp = 4
+
 #Compare scales
 c = [12, 24, 36, 48, 60, 72, 84, 96, 108, 120]
 csh = [13, 25, 37, 49, 61, 73, 85, 97, 109, 121]
@@ -90,35 +96,45 @@ def clean_listas():
 	clean_list(dhcp)
 
 # Conversor
-def strcode(code, arrai, baixo):
+def strcode(code, arrai, position):
+	escala = 0
 	flag = 0
 	if (code==""):
-		if baixo:
+		if position == 1:
 			arrai.append(random.randint(12, 35))	
 			#print("ERRO" + "codigo: " + code)
-		else:
+		if position == 3:
 			arrai.append(random.randint(12, 127))
+		if position == 2:
+			arrai.append(random.randint(60, 84))
+		else:
+			print("ERRO " + code)
 		return
 	tamanho = int(len(code)/1000)
 	while (tamanho>0):
 		note = code[:7]
 		code = code[8:]
 		x = note_conv(note)
-		for escala in escalas:
-			for nota in escala:
-				if(x in nota):
-					flag += 1
+		for nota in escalas[0]:
+			if(x in nota):
+				flag += 1
 		# se tiver na escala
 		if(flag != 0):
-			if(baixo == 1 and x < 12 and x > 35):
+			if(position == 1 and x < 12 and x > 35):
 				x = random.randint(12, 35) #notas de um baixo, segundo o senpai
 				arrai.append(x)
 				tamanho -= 7
-			else:
+			if(position == 2 and x < 60 and x > 84):
+				x = random.randint(60, 84)
 				arrai.append(x)
 				tamanho -= 7
-		if(flag == 0):
-			if()
+			if(position == 2 and x < 100 and x > 127):
+				x = random.randint(100, 127)
+				arrai.append(x)
+				tamanho -= 7
+			else:						#TODO talvez seja preciso aumentar a identidade do UDP, verificar
+				arrai.append(x)
+				tamanho -= 7
 
 
 def note_conv(note):
@@ -134,28 +150,26 @@ def note_conv(note):
 
 
 def make_notes():
-	strcode(f_tcp, notes_tcp, 1)
-	j = set_note_array(notes_tcp, 1, 0)
+	strcode(f_tcp, notes_tcp, p_tcp)
+	set_note_array(notes_tcp, 1)
 
-	#strcode(f_udp, notes_udp, j)
-	#j = set_note_array(notes_udp, 1, 0)
+	strcode(f_udp, notes_udp, p_udp)
+	set_note_array(notes_udp, 1)
 	
-	#strcode(f_arp, notes_arp, j)
-	#j = set_note_array(notes_arp, 2, 0)
+	strcode(f_arp, notes_arp, p_arp)
+	set_note_array(notes_arp, 2)
 	
-	strcode(f_dhcp, notes_dhcp, 1)
-	j = set_note_array(notes_dhcp, 3, 1) #Bass
-	# for i in range(0, 50):
-	#     rnd = random.randint(0, 127)
-	#     notes.append(rnd)
+	strcode(f_dhcp, notes_dhcp, p_dhcp)
+	set_note_array(notes_dhcp, 3) #Bass
 
-def set_note_array(arrai, PROTOCOL, j):
+
+def set_note_array(arrai, PROTOCOL):
+	j = 0
 	#loop to go through all the available notes
 	for i in arrai:
 		rnd  = random.randint(0,2)
 		midinotes.append([j + rnd, i, 127, PROTOCOL])
 		j = j + 1 + rnd
-	return j
 
 #Rythm of the music
 BPM = 250
