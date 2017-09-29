@@ -115,26 +115,32 @@ def strcode(code, arrai, position):
 		note = code[:7]
 		code = code[8:]
 		x = note_conv(note)
-		for nota in escalas	[0]:
+		for nota in escalas[0]:
 			if(x in nota):
 				flag += 1
 		# se tiver na escala
 		if(flag != 0):
-			if(position == 1 and x < 12 and x > 35):
-				x = random.randint(12, 35) #notas de um baixo, segundo o senpai
-				arrai.append(x)
-				tamanho -= 7
-			if(position == 2 and x < 60 and x > 84):
-				x = random.randint(60, 84)
-				arrai.append(x)
-				tamanho -= 7
-			if(position == 3 and x < 100 and x > 127):
-				x = random.randint(100, 127)
-				arrai.append(x)
-				tamanho -= 7
-			else:						#TODO talvez seja preciso aumentar a identidade do UDP, verificar
-				arrai.append(x)
-				tamanho -= 7
+			while True:
+				if(position == 1 and (x < 12 or x > 35)):
+					x = random.randint(12, 35) #notas de um baixo, segundo o senpai
+					arrai.append(x)
+					tamanho -= 7
+				if(position == 2 and (x < 60 or x > 84)):
+					x = random.randint(60, 84)
+					arrai.append(x)
+					tamanho -= 7
+				if(position == 4 and (x < 100 or x > 127)):
+					x = random.randint(100, 127)
+					arrai.append(x)
+					tamanho -= 7
+				break
+				#for nota in escalas[0]:
+				#	if(x in nota):
+					#	break
+		arrai.append(x)
+		tamanho -= 7
+
+
 
 
 def note_conv(note):
@@ -153,8 +159,8 @@ def make_notes():
 	strcode(f_tcp, notes_tcp, p_tcp)
 	set_note_array(notes_tcp, 1)
 
-	strcode(f_udp, notes_udp, p_udp)
-	set_note_array(notes_udp, 1)
+	#strcode(f_udp, notes_udp, p_udp)
+	#set_note_array(notes_udp, 1)
 	
 	strcode(f_arp, notes_arp, p_arp)
 	set_note_array(notes_arp, 2)
