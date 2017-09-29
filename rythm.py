@@ -78,8 +78,6 @@ for pacote in pacotes:
         load = bin(test_int)
         if pacote.haslayer(ARP):
             arp.append(load)
-        if pacote.haslayer(DHCP):
-            dhcp.append(load)
 
 
 def clean_list(lista):
