@@ -130,10 +130,13 @@ def strcode(code, arrai, position):
                 print("Nao saio daqui")
                 if (position == p_arp and (x < 12 or x > 35)) or not pertence_a_escala(x):
                     x = random.randint(12, 35)  # notas de um baixo, segundo o senpai
-                if (position == p_tcp or x < 60 or x > 84) or position == p_udp:
+                if position == p_tcp and (x < 60 or x > 84):
                     tamanho -= y
                     break
-
+                if position == p_udp:
+                    arrai.append(x)
+                    tamanho -= y
+                    break
                 if pertence_a_escala(x):
                     arrai.append(x)
                     tamanho -= y
