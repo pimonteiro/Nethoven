@@ -115,7 +115,7 @@ def strcode(code, arrai, position):
 		note = code[:7]
 		code = code[8:]
 		x = note_conv(note)
-		for nota in escalas[0]:
+		for nota in escalas	[0]:
 			if(x in nota):
 				flag += 1
 		# se tiver na escala
@@ -128,7 +128,7 @@ def strcode(code, arrai, position):
 				x = random.randint(60, 84)
 				arrai.append(x)
 				tamanho -= 7
-			if(position == 2 and x < 100 and x > 127):
+			if(position == 3 and x < 100 and x > 127):
 				x = random.randint(100, 127)
 				arrai.append(x)
 				tamanho -= 7
