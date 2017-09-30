@@ -12,12 +12,13 @@ ap = argparse.ArgumentParser()
 ap.add_argument('-f', '--file', required=True, help='.pcap file to filter')
 ap.add_argument('-s', '--scale', required=False, help='Scale of the notes between 0-11', type=int, default=0)
 ap.add_argument('-b', '--BPM', required=False, help='Rythm of the music', type=int, default=300)
-
+ap.add_argument('-o', '--output', required=True, help='Name of the output file')
 
 # tratar de argumentos
 args = vars(ap.parse_args())
 ficheiro = args["file"]
 escala = args["scale"]
+output = args["output"] + ".midi"
 BPM = args["BPM"]
 
 
@@ -208,7 +209,7 @@ def set_note_array(arrai, PROTOCOL):
 
 
 # Inicialize song
-song = MIDITime(BPM, 'teste.mid')
+song = MIDITime(BPM, output)
 song.add_track(midinotes)
 
 # main
@@ -224,8 +225,6 @@ for i in range(len(tcp)):
 for i in range(len(arp)):
     f_arp += arp[i]
 
-# print(len(f_udp)+len(f_tcp)+len(f_arp)+len(f_dhcp))
+
 make_notes()
-# print("NOTAS DHCP: \n")
-# print(*notes_dhcp, sep='\n')
 song.save_midi()
