@@ -117,7 +117,7 @@ def strcode(code, arrai, position):
     tamanho = int(len(code) / 10)
     while tamanho > 0:
         #print("FODA-SE")
-        y = 7
+        y = random.randint(1, 8)
         note = code[:y]
         code = code[(y+1):]
         x = note_conv(note, y)
@@ -127,7 +127,7 @@ def strcode(code, arrai, position):
         # se tiver na escala
         if flag != 0:
             while True:
-                print("Nao saio daqui")
+                #print("Nao saio daqui")
                 if (position == p_arp and (x < 12 or x > 35)) or not pertence_a_escala(x):
                     x = random.randint(12, 35)  # notas de um baixo, segundo o senpai
                 if position == p_tcp and (x < 60 or x > 84):
@@ -175,7 +175,7 @@ def set_note_array(arrai, PROTOCOL):
 
 
 # Rythm of the music
-BPM = 250
+BPM = 300
 
 # Inicialize song
 song = MIDITime(BPM, 'teste.mid')
