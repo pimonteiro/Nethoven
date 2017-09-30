@@ -114,7 +114,7 @@ def strcode(code, arrai, position):
         else:
             print("ERRO " + code)
         return
-    tamanho = int(len(code) / 10)
+    tamanho = int(len(code) / 100)
     while tamanho > 0:
         #print("FODA-SE")
         y = random.randint(1, 8)
