@@ -10,11 +10,14 @@ random.seed(datetime.now())
 ap = argparse.ArgumentParser()
 ap.add_argument('-f', '--file', required=True, help='.pcap file to filter')
 ap.add_argument('-s', '--scale', required=False, help='Scale of the notes between 0-11', type=int, default=0)
+ap.add_argument('-b', '--BPM', required=False, help='Rythm of the music', type=int, default=300)
+
 
 # tratar de argumentos
 args = vars(ap.parse_args())
 ficheiro = args["file"]
 escala = args["scale"]
+BPM = args["BPM"]
 
 
 # Protocols Position on Music
@@ -118,7 +121,7 @@ def strcode(code, arrai, position):
         else:
             print("ERRO " + code)
         return
-    tamanho = int(len(code) / 100)
+    tamanho = int(len(code) / 10)
     while tamanho > 0:
         #print("FODA-SE")
         y = random.randint(1, 8)
@@ -178,8 +181,6 @@ def set_note_array(arrai, PROTOCOL):
         j = j + 1 + rnd
 
 
-# Rythm of the music
-BPM = 300
 
 # Inicialize song
 song = MIDITime(BPM, 'teste.mid')
