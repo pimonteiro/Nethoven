@@ -118,7 +118,7 @@ def strcode(code, arrai, position):
         else:
             print("ERRO " + code)
         return
-    tamanho = int(len(code) / 100)
+    tamanho = int(len(code) / 10) #Alterar valor para aumentar ou diminuir a divisao da DATA -> Maior equivale a menos informacao
     while tamanho > 0:
         #print("FODA-SE")
         y = random.randint(1, 8)
@@ -134,11 +134,10 @@ def strcode(code, arrai, position):
                 #print("Nao saio daqui")
                 if (position == p_arp and (x < 12 or x > 35)) or not pertence_a_escala(x):
                     x = random.randint(12, 35)  # notas de um baixo, segundo o senpai
-                if position == p_tcp and (x < 60 or x > 84):
+                if (position == p_tcp and (x < 60 or x > 84)) or not pertence_a_escala(x):
                     tamanho -= y
                     break
-                if position == p_udp:
-                    arrai.append(x)
+                if position == p_udp:  #and (x < 40 or x > 120)) or not pertence_a_escala(x):
                     tamanho -= y
                     break
                 if pertence_a_escala(x):
