@@ -5,6 +5,18 @@ import argparse
 
 random.seed(datetime.now())
 
+
+# arguementos
+ap = argparse.ArgumentParser()
+ap.add_argument('-f', '--file', required=True, help='.pcap file to filter')
+ap.add_argument('-s', '--scale', required=False, help='Scale of the notes between 0-11', type=int, default=0)
+
+# tratar de argumentos
+args = vars(ap.parse_args())
+ficheiro = args["file"]
+escala = args["scale"]
+
+
 # Protocols Position on Music
 p_tcp = 2
 p_udp = 3
@@ -37,7 +49,7 @@ la = [a, b, csh, d, e, fsh, gsh]
 lash = [ash, c, d, dsh, f, g, a]
 si = [b, csh, dsh, e, fsh, gsh, ash]
 
-escalas = [do, dosh, re, mi, fa, fash, sol, solsh, la, lash, si]
+escalas = [do, dosh, re, resh, mi, fa, fash, sol, solsh, la, lash, si]
 
 # Array with notes to be played
 midinotes = []
@@ -45,13 +57,6 @@ notes_tcp = []
 notes_udp = []
 notes_arp = []
 
-# arguementos
-ap = argparse.ArgumentParser()
-ap.add_argument('-f', '--file', required=True, help='.pcap file to filter')
-
-# tratar de argumentos
-args = vars(ap.parse_args())
-ficheiro = args["file"]
 
 tcp = []
 udp = []
@@ -93,7 +98,7 @@ def clean_listas():
 
 
 def pertence_a_escala(x):
-    for nota in escalas[0]: # 0 = escala VARIAVEL
+    for nota in escalas[escala]: # 0 = escala VARIAVEL
         if x in nota:
             return 1
     return 0
@@ -101,7 +106,6 @@ def pertence_a_escala(x):
 
 # Conversor
 def strcode(code, arrai, position):
-    escala = 0
     flag = 0
     if code == "":
         if position == p_arp:
