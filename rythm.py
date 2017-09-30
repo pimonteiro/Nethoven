@@ -3,6 +3,7 @@ from datetime import datetime
 from scapy.all import *
 import argparse
 
+# cpu cicle seed for random
 random.seed(datetime.now())
 
 
@@ -26,6 +27,8 @@ p_udp = 3
 p_arp = 4
 
 # Compare scales
+#This shit is chinese, ask Filipe
+#here be dragons
 c = [12, 24, 36, 48, 60, 72, 84, 96, 108, 120]
 csh = [13, 25, 37, 49, 61, 73, 85, 97, 109, 121]
 d = [14, 26, 38, 50, 62, 74, 86, 98, 110, 122]
@@ -53,14 +56,16 @@ lash = [ash, c, d, dsh, f, g, a]
 si = [b, csh, dsh, e, fsh, gsh, ash]
 
 escalas = [do, dosh, re, resh, mi, fa, fash, sol, solsh, la, lash, si]
+#end of dragon's nest
 
 # Array with notes to be played
+#Will save the notes by protocol and then group them
 midinotes = []
 notes_tcp = []
 notes_udp = []
 notes_arp = []
 
-
+#Temporary arrays to filter the notes
 tcp = []
 udp = []
 arp = []
@@ -76,10 +81,12 @@ for pacote in pacotes:
         test_int = int.from_bytes(test, byteorder='little')
         # conteudo binario
         load = bin(test_int)
+        #check what type of packet is
         if pacote.haslayer(UDP):
             udp.append(load)
         if pacote.haslayer(TCP):
             tcp.append(load)
+    #arp shit
     if pacote.haslayer(Padding):
         test = pacote[Padding].load
         test_int = int.from_bytes(test, byteorder='little')
@@ -87,10 +94,14 @@ for pacote in pacotes:
         if pacote.haslayer(ARP):
             arp.append(load)
 
-
+#clean the array of binary
+#lista is array of array
 def clean_list(lista):
+    #get the index of each sub array
     for i in range(len(lista)):
+        #filter the '0b'
         codigo = lista[i][2:]
+        #update with the clean binary stream
         lista[i] = codigo
 
 
@@ -101,6 +112,7 @@ def clean_listas():
 
 
 def pertence_a_escala(x):
+    #since we only use a musical scale at runtime we must check what scale is
     for nota in escalas[escala]: # 0 = escala VARIAVEL
         if x in nota:
             return 1
@@ -110,30 +122,41 @@ def pertence_a_escala(x):
 # Conversor
 def strcode(code, arrai, position):
     flag = 0
+    #in case the stream is nonexisting
+    #we append a random note in the arp range
     if code == "":
         if position == p_arp:
             arrai.append(random.randint(12, 35))
         # print("ERRO" + "codigo: " + code)
+        #if we are dealing with udp
         if position == p_udp:
+            #append note between udp range
             arrai.append(random.randint(12, 127))
         if position == p_tcp:
+            #append note between tcp range
             arrai.append(random.randint(60, 84))
         else:
             print("ERRO " + code)
         return
 
     tamanho = int(len(code) / 10) #Alterar valor para aumentar ou diminuir a divisao da DATA -> Maior equivale a menos informacao
-
+    
+    #while we still have date
     while tamanho > 0:
         #print("FODA-SE")
+        #random Int to change the len() of the code that will make a note
         y = random.randint(1, 8)
-        note = code[:y]
-        code = code[(y+1):]
-        x = note_conv(note, y)
-        for nota in escalas[escala]:
+        #avance on the stream
+        note = code[:y] # get the note
+        code = code[(y+1):] #update the data stream
+        x = note_conv(note, y) #convert binary to a note
+        #check if the note belongs to the scale we are using
+        for nota in escalas[escala]: 
+            #if it finds it, update the flag
             if x in nota:
                 flag += 1
         # se tiver na escala
+        #stop condition
         if flag != 0:
             while True:
                 #print("Nao saio daqui")
@@ -150,16 +173,16 @@ def strcode(code, arrai, position):
                     tamanho -= y
                     break
 
-
+#use the 1's in the binary to create the note
 def note_conv(note, y):
     x = 0
     if len(note) == y:
         for i in range(0, y-1):
             if int(note[i]) == 1:
-                x = 2 ** i + x
+                x = 2 ** i + x #math formula we used based on high amounts of redbull
     return x
 
-
+#create the notes and put the on the array
 def make_notes():
     strcode(f_tcp, notes_tcp, p_tcp)
     set_note_array(notes_tcp, 1)
@@ -178,6 +201,7 @@ def set_note_array(arrai, PROTOCOL):
     # loop to go through all the available notes
     for i in arrai:
         rnd = random.randint(0, 2)
+        #append notes to the note's array
         midinotes.append([j + rnd, i, 127, PROTOCOL])
         j = j + 1 + rnd
 
@@ -190,6 +214,8 @@ song.add_track(midinotes)
 # main
 # Output of the MIDI data to a file.mid
 clean_listas()
+
+#binary streams kek
 f_udp = f_arp = f_dhcp = f_tcp = ""
 for i in range(len(udp)):
     f_udp += udp[i]
