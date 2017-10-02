@@ -5,7 +5,7 @@
 This project was our participation to the 2017 Pixels Camp's Hackathon.
 
 
-This is a simple script that turns  a pcap/.caps file into a .midi file that can be played.
+This is a simple script that turns  a pcap/.caps file into a .mid file that can be played.
 It makes music out of network packets.
 
 
