@@ -12,4 +12,4 @@ It makes music out of network packets.
 We would like to give a shoutout to @fmdcarvalho and his "gang" (:P) for being super useful and friendly!
 Thank you guys, you rock! 
 
-Credits: [Herulume](https://www.github.com/herulume) and myself.
+Credits: [Pimonteiro](https://www.github.com/pimonteiro) and [Herulume](https://www.github.com/herulume) 
