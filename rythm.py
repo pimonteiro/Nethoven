@@ -110,6 +110,7 @@ def clean_listas():
     clean_list(udp)
     clean_list(tcp)
     clean_list(arp)
+    #we can possibly add more protocols to work with
 
 
 def pertence_a_escala(x):
@@ -137,7 +138,7 @@ def strcode(code, arrai, position):
             #append note between tcp range
             arrai.append(random.randint(60, 84))
         else:
-            print("ERRO " + code)
+            print("ERRO " + code) # This code still happens a lot, due to the uncontrollable form of the protocol data
         return
 
     tamanho = int(len(code) / 10) #Alterar valor para aumentar ou diminuir a divisao da DATA -> Maior equivale a menos informacao
@@ -225,6 +226,6 @@ for i in range(len(tcp)):
 for i in range(len(arp)):
     f_arp += arp[i]
 
-
+#start the program
 make_notes()
 song.save_midi()
